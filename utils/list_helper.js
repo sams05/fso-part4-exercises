@@ -1,3 +1,5 @@
+const _ = require('lodash')
+
 /* eslint-disable-next-line no-unused-vars --
  * blogs is not used, but should be kept to maintain the appropriate function signature
  **/
@@ -16,8 +18,19 @@ const favoriteBlog = (blogs) =>
       }
     })
 
+const mostBlogs = (blogs) => {
+  if (blogs.length === 0) {
+    return null
+  }
+  const authors = _.toPairs(_.countBy(blogs, 'author')) // [[<author name>, <number of blogs>], ...]
+  const sortedAuthors = _.sortBy(authors, [(author) => author[1]])
+  const mostBlogsAuthor = sortedAuthors[sortedAuthors.length - 1]
+  return { author: mostBlogsAuthor[0], blogs: mostBlogsAuthor[1] }
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
+  mostBlogs,
 }
