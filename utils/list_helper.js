@@ -28,9 +28,22 @@ const mostBlogs = (blogs) => {
   return { author: mostBlogsAuthor[0], blogs: mostBlogsAuthor[1] }
 }
 
+const mostLikes = (blogs) => {
+  if (blogs.length === 0) {
+    return null
+  }
+
+  const authors = _.toPairs(_.groupBy(blogs, 'author')) // [[<author name>, <blogs[]>], ...]
+  const authorsLikes = authors.map(([authorName, authorBlogs]) => [authorName, totalLikes(authorBlogs)])
+  const sortedAuthorsLikes = _.sortBy(authorsLikes, [(author) => author[1]])
+  const mostLikesAuthor = sortedAuthorsLikes[sortedAuthorsLikes.length - 1]
+  return { author: mostLikesAuthor[0], likes: mostLikesAuthor[1] }
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   mostBlogs,
+  mostLikes,
 }
