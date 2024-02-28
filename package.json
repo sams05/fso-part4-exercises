@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon --inspect index.js",
-    "lint": "eslint .",
-    "test": "node --test"
+    "start": "NODE_ENV=production node index.js",
+    "dev": "NODE_ENV=development nodemon --inspect index.js",
+    "test": "NODE_ENV=test node --test",
+    "lint": "eslint ."
   },
   "keywords": [],
   "author": "",
@@ -22,6 +22,7 @@
   "devDependencies": {
     "@stylistic/eslint-plugin-js": "^1.6.2",
     "eslint": "^8.57.0",
-    "nodemon": "^3.1.0"
+    "nodemon": "^3.1.0",
+    "supertest": "^6.3.4"
   }
 }
