@@ -23,6 +23,13 @@ describe('when there are initially some blogs saved', () => {
     const response = await api.get('/api/blogs')
     assert.strictEqual(response.body.length, helper.initialBlogs.length)
   })
+
+  test('blogs have id property', async () => {
+    const response = await api.get('/api/blogs')
+    const blogs = response.body
+    const hasId = blogs.every((blog) => Object.hasOwn(blog, 'id'))
+    assert(hasId)
+  })
 })
 
 after(async () => {
