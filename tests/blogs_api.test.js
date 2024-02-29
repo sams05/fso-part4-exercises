@@ -30,6 +30,49 @@ describe('when there are initially some blogs saved', () => {
     const hasId = blogs.every((blog) => Object.hasOwn(blog, 'id'))
     assert(hasId)
   })
+
+  describe('adding a note', () => {
+    test('a valid blog can be added', async () => {
+      const newBlog = {
+        title: 'The Greatest Blog',
+        author: 'JI',
+        url: 'www.greatblog.com',
+        likes: 3,
+      }
+      await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+
+      const blogsFromDb = await helper.getBlogsFromDb()
+      assert.strictEqual(blogsFromDb.length, helper.initialBlogs.length + 1)
+      const foundBlog = blogsFromDb.find((blog) => {
+        return (
+          blog.title === newBlog.title &&
+          blog.author === newBlog.author &&
+          blog.url === newBlog.url &&
+          blog.likes === newBlog.likes
+        )
+      })
+      assert(foundBlog)
+    })
+  /*
+    test('likes default to 0', async () => {
+      const newBlog = {
+        title: 'The Greatest Blog',
+        author: 'JI',
+        url: 'www.greatblog.com',
+      }
+      await api.post('/api/blogs').send(newBlog)
+
+      const blogsFromDb = await helper.getBlogsFromDb()
+      const foundBlog = blogsFromDb.find((blog) => {
+        return blog.title === newBlog.title && blog.author === newBlog.author && blog.url === newBlog.url
+      })
+      assert.strictEqual(foundBlog.likes, 0)
+    })*/
+  })
 })
 
 after(async () => {
