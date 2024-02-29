@@ -72,6 +72,23 @@ describe('when there are initially some blogs saved', () => {
       })
       assert.strictEqual(foundBlog.likes, 0)
     })
+
+    test('requires title and url', async () => {
+      const missingTitle = {
+        author: 'JI',
+        url: 'www.greatblog.com',
+      }
+      const missingUrl = {
+        title: 'The Greatest Blog',
+        author: 'JI',
+      }
+      const missingBoth = {
+        author: 'JI',
+      }
+      await api.post('/api/blogs').send(missingTitle).expect(400)
+      await api.post('/api/blogs').send(missingUrl).expect(400)
+      await api.post('/api/blogs').send(missingBoth).expect(400)
+    })
   })
 })
 
