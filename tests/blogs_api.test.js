@@ -31,7 +31,7 @@ describe('when there are initially some blogs saved', () => {
     assert(hasId)
   })
 
-  describe('adding a note', () => {
+  describe('adding a blog', () => {
     test('a valid blog can be added', async () => {
       const newBlog = {
         title: 'The Greatest Blog',
@@ -88,6 +88,27 @@ describe('when there are initially some blogs saved', () => {
       await api.post('/api/blogs').send(missingTitle).expect(400)
       await api.post('/api/blogs').send(missingUrl).expect(400)
       await api.post('/api/blogs').send(missingBoth).expect(400)
+    })
+  })
+
+  describe('deleting a single blog', () => {
+    test('succeeds on existing blog', async () => {
+      const blogToDelete = (await helper.getBlogsFromDb())[0]
+
+      await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
+
+      const blogsAtEnd = await helper.getBlogsFromDb()
+      assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length - 1)
+
+      const foundBlog = blogsAtEnd.find((blog) => {
+        return (
+          blog.title === blogToDelete.title &&
+          blog.author === blogToDelete.author &&
+          blog.url === blogToDelete.url &&
+          blog.likes === blogToDelete.likes
+        )
+      })
+      assert(!foundBlog)
     })
   })
 })
