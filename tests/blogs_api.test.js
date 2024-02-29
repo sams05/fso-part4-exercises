@@ -57,7 +57,7 @@ describe('when there are initially some blogs saved', () => {
       })
       assert(foundBlog)
     })
-  /*
+
     test('likes default to 0', async () => {
       const newBlog = {
         title: 'The Greatest Blog',
@@ -71,7 +71,7 @@ describe('when there are initially some blogs saved', () => {
         return blog.title === newBlog.title && blog.author === newBlog.author && blog.url === newBlog.url
       })
       assert.strictEqual(foundBlog.likes, 0)
-    })*/
+    })
   })
 })
 
