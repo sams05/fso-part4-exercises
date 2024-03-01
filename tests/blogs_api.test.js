@@ -88,6 +88,9 @@ describe('when there are initially some blogs saved', () => {
       await api.post('/api/blogs').send(missingTitle).expect(400)
       await api.post('/api/blogs').send(missingUrl).expect(400)
       await api.post('/api/blogs').send(missingBoth).expect(400)
+
+      const blogsAtEnd = await helper.getBlogsFromDb()
+      assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
     })
   })
 
@@ -109,6 +112,49 @@ describe('when there are initially some blogs saved', () => {
         )
       })
       assert(!foundBlog)
+    })
+  })
+
+  describe('updating a single blog', () => {
+    let blogsAtStart
+    let blogToUpdate
+    beforeEach(async () => {
+      blogsAtStart = await helper.getBlogsFromDb()
+      blogToUpdate = blogsAtStart[0]
+    })
+
+    test('succeeds with valid changes', async () => {
+      const update = {
+        title: 'Blog is Updated',
+        author: 'The updater',
+        url: 'www.newwebsite.org',
+        likes: 5,
+      }
+
+      await api.put(`/api/blogs/${blogToUpdate.id}`).send(update).expect(200)
+
+      const blogsAtEnd = await helper.getBlogsFromDb()
+      assert.strictEqual(blogsAtEnd.length, blogsAtStart.length)
+
+      const updatedBlog = blogsAtEnd.find((blog) => blog.id === blogToUpdate.id)
+      const updateMatches =
+        update.title === updatedBlog.title &&
+        update.author === updatedBlog.author &&
+        update.url === updatedBlog.url &&
+        update.likes === updatedBlog.likes
+      assert(updateMatches)
+    })
+
+    test('succeed when only changing likes', async () => {
+      const update = {
+        likes: 2,
+      }
+
+      await api.put(`/api/blogs/${blogToUpdate.id}`).send(update).expect(200)
+
+      const blogsAtEnd = await helper.getBlogsFromDb()
+      const updatedBlog = blogsAtEnd.find((blog) => blog.id === blogToUpdate.id)
+      assert.strictEqual(updatedBlog.likes, update.likes)
     })
   })
 })
