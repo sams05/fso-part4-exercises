@@ -193,6 +193,71 @@ describe('when there are initially some blogs saved', () => {
         const foundUser = usersAtEnd.find((user) => user.username === newUser.username)
         assert(foundUser)
       })
+
+      test('require username and password with at least 3 characters', async () => {
+        const usersAtStart = await helper.getUsersFromDb()
+
+        const missingUsername = {
+          name: 'Corey',
+          password: 'jr*29gW',
+        }
+        const missingPassword = {
+          username: 'IWMor',
+          name: 'Corey',
+        }
+        const missingBoth = {
+          name: 'Corey',
+        }
+        const shortUsername = {
+          username: 'kf',
+          name: 'Corey',
+          password: 'jr*29gW',
+        }
+        const shortPassword = {
+          username: 'IWMor',
+          name: 'Corey',
+          password: 'p',
+        }
+        const shortBoth = {
+          name: 'Corey',
+        }
+        const usersToAdd = [missingUsername, missingPassword, missingBoth, shortUsername, shortPassword, shortBoth]
+
+        for (const user of usersToAdd) {
+          const response = await api.post('/api/users').send(user).expect(400)
+          assert(response.body.error.includes('User validation failed'))
+        }
+
+        const usersAtEnd = await helper.getUsersFromDb()
+        assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+      })
+
+      test('require unique username', async () => {
+        const usersAtStart = await helper.getUsersFromDb()
+
+        const newUser1 = {
+          username: 'IWMor',
+          name: 'Corey',
+          password: 'jr*29gW',
+        }
+
+        const newUser2 = {
+          username: 'IWMor',
+          name: 'Ilso',
+          password: 'Mfk31',
+        }
+
+        await api.post('/api/users').send(newUser1).expect(201)
+        const response = await api.post('/api/users').send(newUser2).expect(400)
+
+        const usersAtEnd = await helper.getUsersFromDb()
+        assert.strictEqual(usersAtEnd.length, usersAtStart.length + 1)
+
+        // Make sure only one user match the username and that user is newUser1
+        const foundUsers = usersAtEnd.filter((user) => user.username === newUser1.username)
+        assert(foundUsers.length === 1 && foundUsers[0].name === newUser1.name)
+        assert(response.body.error.includes('expected `username` to be unique'))
+      })
     })
   })
 })
