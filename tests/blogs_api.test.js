@@ -3,6 +3,7 @@ const assert = require('node:assert')
 const supertest = require('supertest')
 const app = require('../app')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 const helper = require('./test_helper')
 const mongoose = require('mongoose')
 
@@ -155,6 +156,43 @@ describe('when there are initially some blogs saved', () => {
       const blogsAtEnd = await helper.getBlogsFromDb()
       const updatedBlog = blogsAtEnd.find((blog) => blog.id === blogToUpdate.id)
       assert.strictEqual(updatedBlog.likes, update.likes)
+    })
+  })
+
+  describe('working with users', () => {
+    beforeEach(async () => {
+      await User.deleteMany({})
+      await User.insertMany(helper.initialUsers)
+    })
+
+    test('get all users as json', async () => {
+      const response = await api
+        .get('/api/users')
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+      assert.strictEqual(response.body.length, helper.initialUsers.length)
+    })
+
+    describe('addition of new users', () => {
+      test('succeeds with valid user', async () => {
+        const usersAtStart = await helper.getUsersFromDb()
+
+        const newUser = {
+          username: 'IWMor',
+          name: 'Corey',
+          password: 'jr*29gW',
+        }
+        await api
+          .post('/api/users')
+          .send(newUser)
+          .expect(201)
+          .expect('Content-Type', /application\/json/)
+
+        const usersAtEnd = await helper.getUsersFromDb()
+        assert.strictEqual(usersAtEnd.length, usersAtStart.length + 1)
+        const foundUser = usersAtEnd.find((user) => user.username === newUser.username)
+        assert(foundUser)
+      })
     })
   })
 })

@@ -1,4 +1,5 @@
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 const initialBlogs = [
   {
@@ -44,4 +45,23 @@ const getBlogsFromDb = async () => {
   return blogs.map((blog) => blog.toJSON())
 }
 
-module.exports = { initialBlogs, getBlogsFromDb }
+// Users from https://jsonplaceholder.typicode.com/users
+const initialUsers = [
+  {
+    username: 'Bret',
+    name: 'Leanne Graham',
+    passwordHash: '$2b$10$N7K408r04TpCX8YmMvLQVuOTkzZnpmAbdPcuXauGFiWPFigyFbZU.', //'JKF35k!_3'
+  },
+  {
+    username: 'Antonette',
+    name: 'Ervin Howell',
+    passwordHash: '$2b$10$anFlrphgj9g3uZXwHNAD6.xNwlIC9qUg71LveVKWud0DUSfROoZDG', // 'kwi(*wC'
+  },
+]
+
+const getUsersFromDb = async () => {
+  const users = await User.find({})
+  return users.map((user) => user.toJSON())
+}
+
+module.exports = { initialBlogs, getBlogsFromDb, initialUsers, getUsersFromDb }
