@@ -7,3 +7,27 @@ Content-Type: application/json
   "url": "example.com",
   "likes": 132
 }
+
+###
+
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Best Blog Ever",
+  "author": "Ron Bo",
+  "url": "bestofallblogs.com",
+  "likes": 12
+}
+
+###
+
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Some Other Blog",
+  "author": "Goby Law",
+  "url": "eok.org",
+  "likes": 12
+}

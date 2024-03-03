@@ -6,3 +6,14 @@ Content-Type: application/json
     "name": "Leanne Graham",
     "password": "JKF35k!_3"
 }
+
+###
+
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "Antonette",
+    "name": "Ervin Howell",
+    "password": "gs9N(,q"
+}
