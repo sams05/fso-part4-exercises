@@ -1,5 +1,6 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkJyZXQiLCJpZCI6IjY1ZTUwNjU1NGRmNGU4NGExZjMzZDI1YSIsImlhdCI6MTcwOTUwODI3Mn0.7BNAVCFW_3CJEv9RSjdQXenDrQO01ulMpdNwcjn9FWU
 
 {
   "title": "Generic JS Blog",
@@ -12,6 +13,7 @@ Content-Type: application/json
 
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFudG9uZXR0ZSIsImlkIjoiNjVlNTA2NTg0ZGY0ZTg0YTFmMzNkMjVjIiwiaWF0IjoxNzA5NTA4MzQyfQ.LIupOJRXaAp6o3R-JMQsl5cfjZU_nwJfwVQmdgIX0Dg
 
 {
   "title": "Best Blog Ever",
@@ -24,6 +26,7 @@ Content-Type: application/json
 
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFudG9uZXR0ZSIsImlkIjoiNjVlNTA2NTg0ZGY0ZTg0YTFmMzNkMjVjIiwiaWF0IjoxNzA5NTA4MzQyfQ.LIupOJRXaAp6o3R-JMQsl5cfjZU_nwJfwVQmdgIX0Dg
 
 {
   "title": "Some Other Blog",
